@@ -3,8 +3,27 @@ import React from 'react';
     CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import CommentFormComponent from './CommentFormComponent';
+import { Loading } from './LoadingComponent';
 
-    function RenderDish({dish}) {
+    function RenderDish({dish, isLoading, errMess}) {
+        if (isLoading) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <Loading />
+                    </div>
+                </div>
+            );
+        }
+        else if (errMess) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <h4>{errMess}</h4>
+                    </div>
+                </div>
+            );
+        }
         if (dish != null)
         return(
             <Card>
@@ -20,7 +39,7 @@ import CommentFormComponent from './CommentFormComponent';
             <div></div>
         );
     }
-    function RenderComm({comments}) {
+    function RenderComm({comments, addComment, dishId}) {
         if (comments != null){      
                 const cmt = comments.map(c => {
                 return(
@@ -37,7 +56,8 @@ import CommentFormComponent from './CommentFormComponent';
                 )
                 });
                 return(
-                <div>{cmt}</div>
+                <div>{cmt}
+                    <CommentFormComponent dishId={dishId} addComment={addComment} /></div>
                 )  
         }
     else
@@ -65,12 +85,14 @@ import CommentFormComponent from './CommentFormComponent';
             </div>
             <div className="row">
             <div className="col-12 col-md-5 m-1">
-                <RenderDish dish={props.dish} />
+                <RenderDish dish={props.dish} errMess={props.errMess} isLoading={props.isLoading}/>
             </div>
             <div className="col-12 col-md-5 m-1"> 
                 <h2>Comments</h2>
-                <RenderComm comments={props.comments} />
-                <CommentFormComponent />
+                <RenderComm comments={props.comments}
+                            addComment={props.addComment}
+                            dishId={props.dish.id}
+                />
             </div>
             </div>
             </div>
