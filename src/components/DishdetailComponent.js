@@ -6,24 +6,6 @@ import CommentFormComponent from './CommentFormComponent';
 import { Loading } from './LoadingComponent';
 
     function RenderDish({dish, isLoading, errMess}) {
-        if (isLoading) {
-            return(
-                <div className="container">
-                    <div className="row">            
-                        <Loading />
-                    </div>
-                </div>
-            );
-        }
-        else if (errMess) {
-            return(
-                <div className="container">
-                    <div className="row">            
-                        <h4>{errMess}</h4>
-                    </div>
-                </div>
-            );
-        }
         if (dish != null)
         return(
             <Card>
@@ -67,10 +49,28 @@ import { Loading } from './LoadingComponent';
     }
 
     const DishdetailComponent = (props) =>{
-        const dish = props.dish
-        if (dish == null) {
+        if (props.isLoading) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <Loading />
+                    </div>
+                </div>
+            );
+        }
+        else if (props.errMess) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <h4>{props.errMess}</h4>
+                    </div>
+                </div>
+            );
+        }
+        else if (props.dish == null) {
             return (<div></div>)
         }
+        else
         return(
             <div className="container">
             <div className="row">
@@ -85,7 +85,7 @@ import { Loading } from './LoadingComponent';
             </div>
             <div className="row">
             <div className="col-12 col-md-5 m-1">
-                <RenderDish dish={props.dish} errMess={props.errMess} isLoading={props.isLoading}/>
+                <RenderDish dish={props.dish}/>
             </div>
             <div className="col-12 col-md-5 m-1"> 
                 <h2>Comments</h2>
