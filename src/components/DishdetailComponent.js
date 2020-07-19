@@ -22,7 +22,7 @@ import { baseUrl } from '../shared/baseUrl';
             <div></div>
         );
     }
-    function RenderComm({comments, addComment, dishId}) {
+    function RenderComm({comments, postComment, dishId}) {
         if (comments != null){      
                 const cmt = comments.map(c => {
                 return(
@@ -40,7 +40,7 @@ import { baseUrl } from '../shared/baseUrl';
                 });
                 return(
                 <div>{cmt}
-                    <CommentFormComponent dishId={dishId} addComment={addComment} /></div>
+                    <CommentFormComponent dishId={dishId} postComment={postComment} /></div>
                 )  
         }
     else
@@ -91,7 +91,7 @@ import { baseUrl } from '../shared/baseUrl';
             <div className="col-12 col-md-5 m-1"> 
                 <h2>Comments</h2>
                 <RenderComm comments={props.comments}
-                            addComment={props.addComment}
+                            postComment={props.postComment}
                             dishId={props.dish.id}
                 />
             </div>
