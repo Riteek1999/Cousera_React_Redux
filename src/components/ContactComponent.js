@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 //             Button, Form, FormGroup, FormFeedback, Label, Input, Col } from 'reactstrap';
 import { Breadcrumb, BreadcrumbItem,
                 Button, Row, Col, Label } from 'reactstrap';
-import { Control, Form, Errors, actions } from 'react-redux-form';
+import { Control, LocalForm, Errors, actions } from 'react-redux-form';
+import { postFeedback } from '../redux/ActionCreators';
 
 class Contact extends Component {
     constructor(props) {
@@ -42,8 +43,8 @@ class Contact extends Component {
     // }
 
     handleSubmit(values) {
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
+
+        this.props.postFeedback(values.firstname, values.lastname, values.telnum, values.email, values.agree, values.contactType, values.message);
         this.props.resetFeedbackForm();
         // event.preventDefault();
     }
@@ -133,7 +134,7 @@ class Contact extends Component {
                       <h3>Send us your Feedback</h3>
                    </div>
                     <div className="col-12 col-md-9">
-                    <Form model="feedback" onSubmit={(values) => this.handleSubmit(values)}>
+                    <LocalForm model="feedback" onSubmit={(values) => this.handleSubmit(values)}>
                     <Row className="form-group">
                                 <Label htmlFor="firstname" md={2}>First Name</Label>
                                 <Col md={10}>
@@ -235,10 +236,22 @@ class Contact extends Component {
                                 </Col>
                                 <Col md={{size: 3, offset: 1}}>
                                     <Control.select model=".contactType" name="contactType"
-                                        className="form-control">
+                                        className="form-control" 
+                                        validators={{
+                                            required
+                                        }}>
+                                        <option>--Select--</option>
                                         <option>Tel.</option>
                                         <option>Email</option>
                                     </Control.select>
+                                    <Errors
+                                        className="text-danger"
+                                        model=".contactType"
+                                        show="touched"
+                                        messages={{
+                                            required: 'Required ',
+                                        }}
+                                     />
                                 </Col>
                             </Row>
                             <Row className="form-group">
@@ -256,7 +269,7 @@ class Contact extends Component {
                                     </Button>
                                 </Col>
                             </Row>
-                        </Form>
+                        </LocalForm>
 
                         {/* <Form onSubmit={this.handleSubmit}>
                             <FormGroup row>
